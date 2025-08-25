@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Résultat — Kaitiaki</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 880px; margin: 2rem auto; }
+    .cit { font-size: .92rem; color: #333; margin: .4rem 0; }
+  </style>
+</head>
+<body>
+  <h2>Question</h2>
+  <p>{{ q }}</p>
+  <h2>Réponse</h2>
+  <pre style="white-space: pre-wrap">{{ answer }}</pre>
+  <h3>Citations</h3>
+  {% for c in cits %}
+    <div class="cit">• {{ c.doc_id }} — page {{ c.page }}</div>
+  {% endfor %}
+  <p><a href="/">Nouvelle recherche</a></p>
+</body>
+</html>

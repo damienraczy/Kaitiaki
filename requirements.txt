@@ -1,0 +1,9 @@
+fastapi==0.112.*
+uvicorn[standard]==0.30.*
+haystack-ai==2.*
+qdrant-client==1.*
+sentence-transformers==2.7.*
+pdfplumber==0.11.*
+pydantic==2.*
+jinja2==3.*
+numpy==1.26.*

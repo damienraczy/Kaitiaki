@@ -1,0 +1,93 @@
+[
+  {
+    "question": "Quelles mesures récentes concernent le BTP ?",
+    "expected_citations": [
+      {"doc_id": "jonc_2025-06-12.pdf", "page": 4},
+      {"doc_id": "congres_deliberations_2025-06.pdf", "page": 12}
+    ]
+  },
+  {
+    "question": "Quels sont les derniers indicateurs IEOM sur l'activité économique ?",
+    "expected_citations": [
+      {"doc_id": "ieom_conjoncture_T2_2025.pdf", "page": 8}
+    ]
+  },
+  {
+    "question": "Quelles actualités récentes de l'ISEE sur l'emploi ?",
+    "expected_citations": [
+      {"doc_id": "isee_indicateurs_emploi_2025-05.pdf", "page": 3}
+    ]
+  },
+  {
+    "question": "Quelles décisions récentes concernent l'énergie ?",
+    "expected_citations": [
+      {"doc_id": "congres_deliberations_2025-06.pdf", "page": 7}
+    ]
+  },
+  {
+    "question": "Quelles évolutions budgétaires ont été publiées au JONC ce mois-ci ?",
+    "expected_citations": [
+      {"doc_id": "jonc_2025-07-03.pdf", "page": 2}
+    ]
+  },
+  {
+    "question": "Quelles statistiques démographiques ont été publiées récemment par l’ISEE ?",
+    "expected_citations": [
+      {"doc_id": "isee_population_2025-04.pdf", "page": 5}
+    ]
+  },
+  {
+    "question": "Quelles mesures récentes en matière de sécurité au travail ?",
+    "expected_citations": [
+      {"doc_id": "jonc_2025-06-26.pdf", "page": 10}
+    ]
+  },
+  {
+    "question": "Quelles orientations récentes pour les infrastructures ?",
+    "expected_citations": [
+      {"doc_id": "congres_deliberations_2025-05.pdf", "page": 9}
+    ]
+  },
+  {
+    "question": "Quels constats IEOM sur le crédit aux entreprises ?",
+    "expected_citations": [
+      {"doc_id": "ieom_conjoncture_T1_2025.pdf", "page": 6}
+    ]
+  },
+  {
+    "question": "Quelles publications ISEE sur l'énergie et la consommation ?",
+    "expected_citations": [
+      {"doc_id": "isee_energie_2025-03.pdf", "page": 4}
+    ]
+  },
+  {
+    "question": "Quels textes JONC sur l'environnement ont été publiés récemment ?",
+    "expected_citations": [
+      {"doc_id": "jonc_2025-05-15.pdf", "page": 11}
+    ]
+  },
+  {
+    "question": "Quelles informations sur les importations récentes ?",
+    "expected_citations": [
+      {"doc_id": "isee_commerce_exterieur_2025-06.pdf", "page": 2}
+    ]
+  },
+  {
+    "question": "Quelles dispositions récentes touchent l'éducation ?",
+    "expected_citations": [
+      {"doc_id": "congres_deliberations_2025-04.pdf", "page": 5}
+    ]
+  },
+  {
+    "question": "Quelles annonces JONC sur la fiscalité des entreprises ?",
+    "expected_citations": [
+      {"doc_id": "jonc_2025-07-10.pdf", "page": 3}
+    ]
+  },
+  {
+    "question": "Quelles mesures récentes concernant le tourisme ?",
+    "expected_citations": [
+      {"doc_id": "congres_deliberations_2025-06.pdf", "page": 15}
+    ]
+  }
+]
