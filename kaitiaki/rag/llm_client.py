@@ -1,9 +1,10 @@
 # kaitiaki/rag/llm_client.py
 import requests
-import yaml
-from pathlib import Path
+from kaitiaki.utils.settings import CFG, settings
+# import yaml
+# from pathlib import Path
 
-CFG = yaml.safe_load((Path(__file__).resolve().parents[1] / "config" / "app.yaml").read_text(encoding="utf-8"))
+# CFG = yaml.safe_load((Path(__file__).resolve().parents[1] / "config" / "app.yaml").read_text(encoding="utf-8"))
 
 def generate_answer(question: str, contexts: list[str]) -> str:
     """Appel à une API OpenAI-compatible locale (vLLM ou autre)."""
@@ -17,11 +18,42 @@ def generate_answer(question: str, contexts: list[str]) -> str:
     )
 
     body = {
-        "model": CFG["models"]["llm_model"],
+        "model": CFG["llm"]["model"],
         "messages": [{"role":"user","content": prompt}],
-        "temperature": 0.2,
-        "max_tokens": 600,
+        "temperature": CFG["llm"]["temperature"],
+        "max_tokens": CFG["llm"]["max_tokens"],
+        "stream": False # On demande une réponse complète, pas un flux
     }
-    r = requests.post(f'{CFG["models"]["llm_base_url"].rstrip("/")}/chat/completions', json=body, timeout=120)
+
+    headers = {
+        "Authorization": f"Bearer {settings.llm_api_key}",        
+        "Content-Type": "application/json"
+    }
+    
+    print(f"Prompt ={prompt[:200]}")
+
+    # url = CFG["llm"]["llm_base_url"].rstrip("/") + "/chat/completions"
+    endpoint = f'{CFG["llm"]["base_url"].rstrip("/")}' + "/generate"
+    
+    print(f'MODEL = <<--{CFG["llm"]["model"]}-->>')
+    print(f"URL = <<--{endpoint}-->>")
+    print(f"KEY = <<--{settings.llm_api_key[:10]}...-->>")
+
+    r = requests.post(
+        endpoint,
+        json=body,
+        headers=headers,
+        timeout=120
+    )
+
     r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"].strip()
+    
+    print(f"LLM full response: {r}")
+    
+    r_json = r.json()
+    print(f"LLM full response JSON: {r_json}")
+
+    response = r_json.get("response", "").strip()
+    return response
+
+    # return r.json()["choices"][0]["message"]["content"].strip()

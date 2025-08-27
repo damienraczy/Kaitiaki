@@ -1,0 +1,27 @@
+# requirements.in — Haystack v2
+
+fastapi
+uvicorn[standard]
+python-multipart
+
+# Haystack 2.x
+haystack-ai==2.17.1
+qdrant-haystack==8.1.0
+qdrant-client
+
+# Embeddings
+sentence-transformers
+
+# PDF parsing
+pdfplumber
+
+# Config
+pydantic>=2.6
+pyyaml
+
+# BM25 search
+rank-bm25
+
+jinja2
+numpy
+scikit-learn

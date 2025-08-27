@@ -5,15 +5,15 @@ import pickle
 from pathlib import Path
 from typing import List, Tuple
 
-import yaml
 import numpy as np
 from sentence_transformers import SentenceTransformer, CrossEncoder
 from haystack import Document
 from haystack_integrations.document_stores.qdrant import QdrantDocumentStore
-
 from .fusion import rrf_merge
 
-CFG = yaml.safe_load((Path(__file__).resolve().parents[1] / "config" / "app.yaml").read_text(encoding="utf-8"))
+from kaitiaki.utils.settings import CFG
+
+# CFG = yaml.safe_load((Path(__file__).resolve().parents[1] / "config" / "app.yaml").read_text(encoding="utf-8"))
 
 def _load_bm25():
     with open(CFG["paths"]["bm25_index"], "rb") as f:
@@ -30,7 +30,8 @@ def _bm25_search(query: str, top_k: int) -> List[Tuple[int, float]]:
 
 def _dense_search(store: QdrantDocumentStore, embedder: SentenceTransformer, query: str, top_k: int):
     q = embedder.encode([query], normalize_embeddings=True)[0]
-    docs: List[Document] = store.query_by_embedding(q, top_k=top_k)
+    # docs: List[Document] = store.query_by_embedding(q, top_k=top_k)
+    docs: List[Document] = store._query_by_embedding(q, top_k=top_k)
     return docs
 
 def hybrid_search(query: str, top_k_dense=20, top_k_bm25=20, rerank_top_k=25):
@@ -39,7 +40,8 @@ def hybrid_search(query: str, top_k_dense=20, top_k_bm25=20, rerank_top_k=25):
     store = QdrantDocumentStore(
         host=CFG["qdrant"]["host"],
         port=CFG["qdrant"]["port"],
-        collection_name=CFG["qdrant"]["collection"],
+        # collection_name=CFG["qdrant"]["collection"],
+        index=CFG["qdrant"]["collection"],
         embedding_dim=384,
     )
     embedder = SentenceTransformer(CFG["models"]["embedding"])
@@ -55,7 +57,16 @@ def hybrid_search(query: str, top_k_dense=20, top_k_bm25=20, rerank_top_k=25):
     for i, sc in bm25_list:
         m = bm25_meta[i]
         # Récupérer le chunk depuis Qdrant par filtre meta (doc_id + page)
-        hits = store.filter_documents(filters={"doc_id": m["doc_id"], "page": m["page"]})
+        # filters={"doc_id": m["doc_id"], "page": m["page"]}
+        filters = {
+            "operator": "AND",
+            "conditions": [
+                {"field": "meta.doc_id", "operator": "==", "value": m["doc_id"]},
+                {"field": "meta.page", "operator": "==", "value": m["page"]},
+            ],
+        }
+
+        hits = store.filter_documents(filters=filters)
         if hits:
             bm25_docs.append(hits[0])
 

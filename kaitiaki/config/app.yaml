@@ -5,17 +5,37 @@ paths:
   bm25_meta:  "kaitiaki/data/processed/bm25_meta.json"
 
 qdrant:
+  url: "http://localhost:6333"
+  collection: "kaitiaki_dev"
   host: "127.0.0.1"
   port: 6333
-  collection: "kaitiaki_v1"
 
 models:
-  embedding: "sentence-transformers/all-MiniLM-L6-v2"
+  embedding: "all-minilm-l6-v2"
   reranker: "BAAI/bge-reranker-base"
   llm_base_url: "http://127.0.0.1:8000/v1"   # OpenAI-like endpoint (vLLM/serveur maison)
-  llm_model: "local/llama-3.1-8b-instruct"
+  llm_model: "mistral:7b-instruct"          # Model name for the LLM
   llm_max_ctx: 4096
 
+embed:
+  # soit un modèle local Sentence-Transformers
+  # model: "sentence-transformers/all-MiniLM-L6-v2"
+  model: "all-minilm:l6-v2"
+  device: "cpu"  # "mps" possible sur Mac
+
+reranker:
+  # cross-encoder pour reranking
+  model: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
+llm:
+  api_key: "OLLAMA_API_KEY"                       # placeholder si requis
+  # base_url: "http://localhost:11434"
+  # model: "qwen2.5:7b-instruct"            # ou mistral:7b-instruct, etc.
+  temperature: 0.2
+  max_tokens: 4000
+  base_url: "https://ollama.com/api"
+  model: "gpt-oss:20b"            # ou mistral:7b-instruct, etc.
+  
 retrieval:
   top_k_dense: 20
   top_k_bm25: 20
@@ -24,3 +44,14 @@ retrieval:
 
 ui:
   default_days: 180
+
+ingest:
+  input_dir: "data/in"       # dossier d’entrée des textes/JSONL
+  batch_size: 64
+  bm25_index_path: "data/bm25_index"
+
+runtime:
+  top_k_dense: 20
+  top_k_bm25: 20
+  rrf_k: 60
+  max_ctx_docs: 8

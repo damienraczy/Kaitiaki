@@ -12,8 +12,9 @@ if str(ROOT) not in sys.path:
 
 from kaitiaki.rag.pipeline import hybrid_search
 from kaitiaki.rag.schemas import Answer  # seulement pour le format
+from kaitiaki.utils.settings import CFG
 
-CFG = yaml.safe_load((ROOT / "config" / "app.yaml").read_text(encoding="utf-8"))
+# CFG = yaml.safe_load((ROOT / "config" / "app.yaml").read_text(encoding="utf-8"))
 
 API_URL = os.environ.get("KAI_API", "http://127.0.0.1:8000")
 TESTSET_PATH = ROOT / "eval" / "qa_testset.json"

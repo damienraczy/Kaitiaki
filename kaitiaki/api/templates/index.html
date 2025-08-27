@@ -7,15 +7,82 @@
     body { font-family: system-ui, sans-serif; max-width: 880px; margin: 2rem auto; }
     input, button { font-size: 1rem; padding: .6rem; }
     .row { display: flex; gap: .5rem; }
+    #result-container { margin-top: 2rem; }
+    pre { white-space: pre-wrap; background-color: #f4f4f4; padding: 1rem; border-radius: 5px; }
+    .cit { font-size: .92rem; color: #333; margin: .4rem 0; }
+    .snippet { font-style: italic; color: #555; margin-left: 1rem; border-left: 2px solid #ccc; padding-left: 1rem; }
   </style>
 </head>
 <body>
   <h1>Kaitiaki — Veille NC (MVP)</h1>
-  <form method="post" action="/search">
+  
+  <form id="search-form">
     <div class="row">
-      <input name="text" placeholder="Ex: Quelles mesures récentes concernent le BTP ?" style="flex:1" />
+      <input id="search-input" name="text" placeholder="Ex: Quelles mesures récentes concernent le BTP ?" style="flex:1" />
       <button type="submit">Chercher</button>
     </div>
   </form>
+
+  <div id="result-container"></div>
+
+<script>
+  const form = document.getElementById('search-form');
+  const input = document.getElementById('search-input');
+  const resultContainer = document.getElementById('result-container');
+
+  form.addEventListener('submit', async (event) => {
+    // 1. Empêcher le rechargement de la page
+    event.preventDefault();
+
+    const question = input.value;
+    if (!question) return;
+
+    // 2. Afficher un message de chargement
+    resultContainer.innerHTML = '<p>Recherche en cours...</p>';
+
+    try {
+      // 3. Envoyer la requête JSON à l'endpoint /query
+      const response = await fetch('/query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Le corps de la requête est un objet JSON
+        // Le schéma Query attend un champ "text"
+        body: JSON.stringify({ text: question, top_k: 10 }), 
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
+
+      // 4. Récupérer la réponse JSON
+      const data = await response.json();
+
+      // 5. Construire le HTML et l'afficher
+      let html = `
+        <h2>Question</h2>
+        <p>${question}</p>
+        <h2>Réponse</h2>
+        <pre>${data.answer}</pre>
+        <h3>Citations</h3>
+      `;
+
+      data.citations.forEach(cit => {
+        html += `
+          <div class="cit">• ${cit.doc_id} — page ${cit.page}</div>
+          <p class="snippet">${cit.snippet || ''}</p>
+        `;
+      });
+      
+      resultContainer.innerHTML = html;
+
+    } catch (error) {
+      console.error('Erreur lors de la recherche:', error);
+      resultContainer.innerHTML = '<p>Une erreur est survenue. Veuillez réessayer.</p>';
+    }
+  });
+</script>
+
 </body>
 </html>

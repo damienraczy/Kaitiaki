@@ -1,5 +1,5 @@
 # kaitiaki/api/server.py
-from fastapi import FastAPI, Request, Body
+from fastapi import FastAPI, Request, Body, Form
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
@@ -9,11 +9,12 @@ import time
 from kaitiaki.rag.pipeline import hybrid_search
 from kaitiaki.rag.llm_client import generate_answer
 from kaitiaki.rag.schemas import Query, Answer
+from kaitiaki.utils.settings import CFG
 
 app = FastAPI()
 templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
 
-CFG = yaml.safe_load((Path(__file__).resolve().parents[1] / "config" / "app.yaml").read_text(encoding="utf-8"))
+# CFG = yaml.safe_load((Path(__file__).resolve().parents[1] / "config" / "app.yaml").read_text(encoding="utf-8"))
 
 @app.get("/health")
 def health():
@@ -30,6 +31,9 @@ def ingest():
 
 @app.post("/query", response_model=Answer)
 def query(q: Query = Body(...)):
+
+    print(f"def query(q: Query = Body(...)):")
+    
     ranked, rt = hybrid_search(q.text, rerank_top_k= min(q.top_k, CFG["retrieval"]["rerank_top_k"]))
     # Concaténer quelques contexts
     contexts = [d.content for d, _ in ranked[:8]]
@@ -50,9 +54,14 @@ def query(q: Query = Body(...)):
 
 # Pages simples
 @app.post("/search", response_class=HTMLResponse)
-def search_page(request: Request, text: str = Body(..., embed=True)):
+def search_page(request: Request, text: str = Form(...)): # <--- Le changement est ici
+# def search_page(request: Request, text: str = Body(..., embed=True)):
+
+    print(f"def search_page(request: Request, text: str = Body(..., embed=True)):")
+
     ranked, rt = hybrid_search(text)
     contexts = [d.content for d,_ in ranked[:6]]
     answer = generate_answer(text, contexts)
     cits = [{"doc_id": d.meta.get("doc_id"), "page": d.meta.get("page")} for d,_ in ranked[:3]]
     return templates.TemplateResponse("result.html", {"request": request, "q": text, "answer": answer, "cits": cits})
+
