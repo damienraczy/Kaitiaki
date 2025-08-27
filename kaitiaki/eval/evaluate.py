@@ -40,6 +40,7 @@ def call_api(question: str) -> Tuple[Dict, int]:
     r = requests.post(f"{API_URL}/query", json={"text": question})
     r.raise_for_status()
     wall_ms = int((time.time() - t0) * 1000)
+    print(f"API call latency: {wall_ms} ms - status {r.status_code}")
     return r.json(), wall_ms
 
 def topk_docpage_from_hybrid(question: str, k: int = 20) -> List[Tuple[str, int]]:
@@ -89,7 +90,9 @@ def run_eval():
 
     for i, t in enumerate(tests, start=1):
         q = t["question"]
-        gt = t.get("expected_citations", [])
+        # gt = t.get("expected_citations", [])
+        gt = t["expected_citations"]
+        
         # 1) retrieval pour recall@20
         retrieved = topk_docpage_from_hybrid(q, k=20)
         r_at_20 = recall_at_k(gt, retrieved, k=20)
@@ -103,7 +106,7 @@ def run_eval():
                 "i": i, "question": q, "error": str(e), "recall@20": r_at_20
             })
             latencies.append(99999)
-            cit_valid_rates.append(0.0)
+            cit_valid_rates.append(-1.0)
             continue
 
         latencies.append(wall_ms if "latency_ms" not in resp else resp["latency_ms"])

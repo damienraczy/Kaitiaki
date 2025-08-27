@@ -20,8 +20,8 @@ def generate_answer(question: str, contexts: list[str]) -> str:
     body = {
         "model": CFG["llm"]["model"],
         "messages": [{"role":"user","content": prompt}],
-        "temperature": CFG["llm"]["temperature"],
-        "max_tokens": CFG["llm"]["max_tokens"],
+        # "temperature": CFG["llm"]["temperature"],
+        # "max_tokens": CFG["llm"]["max_tokens"],
         "stream": False # On demande une réponse complète, pas un flux
     }
 
@@ -30,15 +30,10 @@ def generate_answer(question: str, contexts: list[str]) -> str:
         "Content-Type": "application/json"
     }
     
-    print(f"Prompt ={prompt[:200]}")
 
     # url = CFG["llm"]["llm_base_url"].rstrip("/") + "/chat/completions"
     endpoint = f'{CFG["llm"]["base_url"].rstrip("/")}' + "/generate"
     
-    print(f'MODEL = <<--{CFG["llm"]["model"]}-->>')
-    print(f"URL = <<--{endpoint}-->>")
-    print(f"KEY = <<--{settings.llm_api_key[:10]}...-->>")
-
     r = requests.post(
         endpoint,
         json=body,
@@ -47,14 +42,8 @@ def generate_answer(question: str, contexts: list[str]) -> str:
     )
 
     r.raise_for_status()
-    
-    print(f"LLM full response: {r}")
-    
     r_json = r.json()
-    print(f"LLM full response JSON: {r_json}")
-
     response = r_json.get("response", "").strip()
-    print(f"LLM response: {response}")
     return response
 
     # return r.json()["choices"][0]["message"]["content"].strip()
