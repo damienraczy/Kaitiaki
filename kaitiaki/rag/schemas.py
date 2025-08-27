@@ -1,6 +1,6 @@
 # kaitiaki/rag/schemas.py
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Dict, Optional
 
 class Query(BaseModel):
     text: str
@@ -18,3 +18,9 @@ class Answer(BaseModel):
     answer: str
     citations: List[Citation] = Field(default_factory=list)
     latency_ms: int = 0
+    latency_breakdown: Dict[str, int] = Field(..., alias="latencyMs")
+
+    class Config:
+        populate_by_name = True
+
+

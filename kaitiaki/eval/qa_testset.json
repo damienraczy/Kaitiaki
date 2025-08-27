@@ -1,93 +1,62 @@
 [
   {
-    "question": "Quelles mesures récentes concernent le BTP ?",
+    "question": "Quelle est la durée de la période d'essai pour un cadre dans le secteur du BTP ?",
     "expected_citations": [
-      {"doc_id": "jonc_2025-06-12.pdf", "page": 4},
-      {"doc_id": "congres_deliberations_2025-06.pdf", "page": 12}
+      {"doc_id": "20190905cdsp_batiments_et_travaux_publics.pdf"}
     ]
   },
   {
-    "question": "Quels sont les derniers indicateurs IEOM sur l'activité économique ?",
+    "question": "Quel est le salaire minimum pour un ouvrier qualifié de niveau P2 dans le BTP en 2019 ?",
     "expected_citations": [
-      {"doc_id": "ieom_conjoncture_T2_2025.pdf", "page": 8}
+      {"doc_id": "20191021cdsp_batiments_et_travaux_publics_salaire_conventionnel.pdf"}
     ]
   },
   {
-    "question": "Quelles actualités récentes de l'ISEE sur l'emploi ?",
+    "question": "Comment sont majorées les heures supplémentaires dans la branche Commerce et divers ?",
     "expected_citations": [
-      {"doc_id": "isee_indicateurs_emploi_2025-05.pdf", "page": 3}
+      {"doc_id": "20190806cdsp_commerce_et_divers.pdf"}
     ]
   },
   {
-    "question": "Quelles décisions récentes concernent l'énergie ?",
+    "question": "Quelle est la durée du congé pour le mariage d'un salarié selon l'accord interprofessionnel territorial ?",
     "expected_citations": [
-      {"doc_id": "congres_deliberations_2025-06.pdf", "page": 7}
+      {"doc_id": "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf"}
     ]
   },
   {
-    "question": "Quelles évolutions budgétaires ont été publiées au JONC ce mois-ci ?",
+    "question": "Quelles sont les conditions de l'indemnité de licenciement pour un employé ayant 5 ans d'ancienneté dans le secteur du commerce ?",
     "expected_citations": [
-      {"doc_id": "jonc_2025-07-03.pdf", "page": 2}
+      {"doc_id": "20190806cdsp_commerce_et_divers.pdf"}
     ]
   },
   {
-    "question": "Quelles statistiques démographiques ont été publiées récemment par l’ISEE ?",
+    "question": "Le harcèlement moral est-il défini dans la partie législative du Code du travail ?",
     "expected_citations": [
-      {"doc_id": "isee_population_2025-04.pdf", "page": 5}
+      {"doc_id": "Code_du_travail_PL_ChG_02-10-2018.pdf"}
     ]
   },
   {
-    "question": "Quelles mesures récentes en matière de sécurité au travail ?",
+    "question": "Quelles sont les règles concernant le préavis de démission pour les employés dans le BTP ?",
     "expected_citations": [
-      {"doc_id": "jonc_2025-06-26.pdf", "page": 10}
+      {"doc_id": "20190905cdsp_batiments_et_travaux_publics.pdf"}
     ]
   },
   {
-    "question": "Quelles orientations récentes pour les infrastructures ?",
+    "question": "Comment est organisée la négociation collective sur les salaires selon l'accord cadre interprofessionnel ?",
     "expected_citations": [
-      {"doc_id": "congres_deliberations_2025-05.pdf", "page": 9}
+      {"doc_id": "20190729cdsp_accord_cadre_interprofessionnel_aci.pdf"}
     ]
   },
   {
-    "question": "Quels constats IEOM sur le crédit aux entreprises ?",
+    "question": "Existe-t-il une prime d'ancienneté dans la convention collective du commerce et divers ?",
     "expected_citations": [
-      {"doc_id": "ieom_conjoncture_T1_2025.pdf", "page": 6}
+      {"doc_id": "20190806cdsp_commerce_et_divers.pdf"}
     ]
   },
   {
-    "question": "Quelles publications ISEE sur l'énergie et la consommation ?",
+    "question": "Quelle est la procédure en cas de faute grave d'un salarié selon le Code du travail ?",
     "expected_citations": [
-      {"doc_id": "isee_energie_2025-03.pdf", "page": 4}
-    ]
-  },
-  {
-    "question": "Quels textes JONC sur l'environnement ont été publiés récemment ?",
-    "expected_citations": [
-      {"doc_id": "jonc_2025-05-15.pdf", "page": 11}
-    ]
-  },
-  {
-    "question": "Quelles informations sur les importations récentes ?",
-    "expected_citations": [
-      {"doc_id": "isee_commerce_exterieur_2025-06.pdf", "page": 2}
-    ]
-  },
-  {
-    "question": "Quelles dispositions récentes touchent l'éducation ?",
-    "expected_citations": [
-      {"doc_id": "congres_deliberations_2025-04.pdf", "page": 5}
-    ]
-  },
-  {
-    "question": "Quelles annonces JONC sur la fiscalité des entreprises ?",
-    "expected_citations": [
-      {"doc_id": "jonc_2025-07-10.pdf", "page": 3}
-    ]
-  },
-  {
-    "question": "Quelles mesures récentes concernant le tourisme ?",
-    "expected_citations": [
-      {"doc_id": "congres_deliberations_2025-06.pdf", "page": 15}
+      {"doc_id": "Code_du_travail_PL_ChG_02-10-2018.pdf"}
     ]
   }
 ]

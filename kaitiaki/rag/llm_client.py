@@ -54,6 +54,7 @@ def generate_answer(question: str, contexts: list[str]) -> str:
     print(f"LLM full response JSON: {r_json}")
 
     response = r_json.get("response", "").strip()
+    print(f"LLM response: {response}")
     return response
 
     # return r.json()["choices"][0]["message"]["content"].strip()

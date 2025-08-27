@@ -36,6 +36,7 @@ ENV/
 *.seed
 *.bak
 *.tmp
+.~*
 
 # Outils de packaging
 *.egg-info/
@@ -66,3 +67,4 @@ drafts/
 experiments/
 tests_local/
 sandbox/
+kaitiaki/.DS_Store

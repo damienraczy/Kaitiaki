@@ -50,7 +50,8 @@ def query(q: Query = Body(...)):
             "snippet": (d.content[:240] + "…") if len(d.content) > 240 else d.content
         })
 
-    return Answer(answer=answer_text, citations=cits, latency_ms=rt + gen_ms)
+    # return Answer(answer=answer_text, citations=cits, latency_ms=rt + gen_ms)
+    return Answer(answer=answer_text, citations=cits, latency_breakdown=latency_details)
 
 # Pages simples
 @app.post("/search", response_class=HTMLResponse)

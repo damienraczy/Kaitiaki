@@ -1,0 +1,89 @@
+{
+  "n": 10,
+  "latency_p95_ms": 17785,
+  "latency_avg_ms": 15749,
+  "recall@20_avg": 0.0,
+  "cit_valid_rate_avg": 0.0,
+  "items": [
+    {
+      "i": 1,
+      "question": "Quelle est la durée de la période d'essai pour un cadre dans le secteur du BTP ?",
+      "recall@20": 0.0,
+      "citations_valid_rate": 0.0,
+      "latency_ms": 16153,
+      "n_citations": 3
+    },
+    {
+      "i": 2,
+      "question": "Quel est le salaire minimum pour un ouvrier qualifié de niveau P2 dans le BTP en 2019 ?",
+      "recall@20": 0.0,
+      "citations_valid_rate": 0.0,
+      "latency_ms": 17391,
+      "n_citations": 3
+    },
+    {
+      "i": 3,
+      "question": "Comment sont majorées les heures supplémentaires dans la branche Commerce et divers ?",
+      "recall@20": 0.0,
+      "citations_valid_rate": 0.0,
+      "latency_ms": 15191,
+      "n_citations": 3
+    },
+    {
+      "i": 4,
+      "question": "Quelle est la durée du congé pour le mariage d'un salarié selon l'accord interprofessionnel territorial ?",
+      "recall@20": 0.0,
+      "citations_valid_rate": 0.0,
+      "latency_ms": 15520,
+      "n_citations": 3
+    },
+    {
+      "i": 5,
+      "question": "Quelles sont les conditions de l'indemnité de licenciement pour un employé ayant 5 ans d'ancienneté dans le secteur du commerce ?",
+      "recall@20": 0.0,
+      "citations_valid_rate": 0.0,
+      "latency_ms": 16435,
+      "n_citations": 3
+    },
+    {
+      "i": 6,
+      "question": "Le harcèlement moral est-il défini dans la partie législative du Code du travail ?",
+      "recall@20": 0.0,
+      "citations_valid_rate": 0.0,
+      "latency_ms": 14172,
+      "n_citations": 3
+    },
+    {
+      "i": 7,
+      "question": "Quelles sont les règles concernant le préavis de démission pour les employés dans le BTP ?",
+      "recall@20": 0.0,
+      "citations_valid_rate": 0.0,
+      "latency_ms": 15033,
+      "n_citations": 3
+    },
+    {
+      "i": 8,
+      "question": "Comment est organisée la négociation collective sur les salaires selon l'accord cadre interprofessionnel ?",
+      "recall@20": 0.0,
+      "citations_valid_rate": 0.0,
+      "latency_ms": 16131,
+      "n_citations": 3
+    },
+    {
+      "i": 9,
+      "question": "Existe-t-il une prime d'ancienneté dans la convention collective du commerce et divers ?",
+      "recall@20": 0.0,
+      "citations_valid_rate": 0.0,
+      "latency_ms": 16514,
+      "n_citations": 3
+    },
+    {
+      "i": 10,
+      "question": "Quelle est la procédure en cas de faute grave d'un salarié selon le Code du travail ?",
+      "recall@20": 0.0,
+      "citations_valid_rate": 0.0,
+      "latency_ms": 14958,
+      "n_citations": 3
+    }
+  ]
+}
