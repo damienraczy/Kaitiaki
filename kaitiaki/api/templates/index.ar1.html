@@ -31,43 +31,47 @@
   const resultContainer = document.getElementById('result-container');
 
   form.addEventListener('submit', async (event) => {
+    // 1. Empêcher le rechargement de la page
     event.preventDefault();
-    const questionText = input.value;
-    if (!questionText) return;
 
+    const question = input.value;
+    if (!question) return;
+
+    // 2. Afficher un message de chargement
     resultContainer.innerHTML = '<p>Recherche en cours...</p>';
 
     try {
-      // --- CORRECTION : Envoyer un champ "question" ---
+      // 3. Envoyer la requête JSON à l'endpoint /query
       const response = await fetch('/query', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: questionText }), 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Le corps de la requête est un objet JSON
+        // Le schéma Query attend un champ "text"
+        body: JSON.stringify({ text: question, top_k: 10 }), 
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`Erreur HTTP ${response.status}: ${JSON.stringify(errorData)}`);
+        throw new Error(`Erreur HTTP: ${response.status}`);
       }
 
+      // 4. Récupérer la réponse JSON
       const data = await response.json();
 
-      // --- CORRECTION : Utiliser les nouveaux noms de champs ---
-      // Les alias Pydantic (camelCase) sont utilisés ici : documentId, pageNumber, etc.
+      // 5. Construire le HTML et l'afficher
       let html = `
         <h2>Question</h2>
-        <p>${questionText}</p>
+        <p>${question}</p>
         <h2>Réponse</h2>
         <pre>${data.answer}</pre>
         <h3>Citations</h3>
       `;
 
       data.citations.forEach(cit => {
-        // Crée un snippet court à partir du contenu complet
-        const snippet = cit.content.length > 240 ? cit.content.substring(0, 240) + '…' : cit.content;
         html += `
-          <div class="cit">• ${cit.source || cit.documentId} — page ${cit.pageNumber}</div>
-          <p class="snippet">${snippet}</p>
+          <div class="cit">• ${cit.doc_id} — page ${cit.page}</div>
+          <p class="snippet">${cit.snippet || ''}</p>
         `;
       });
       
@@ -75,7 +79,7 @@
 
     } catch (error) {
       console.error('Erreur lors de la recherche:', error);
-      resultContainer.innerHTML = `<p>Une erreur est survenue. Vérifiez la console pour les détails.</p><pre>${error.message}</pre>`;
+      resultContainer.innerHTML = '<p>Une erreur est survenue. Veuillez réessayer.</p>';
     }
   });
 </script>

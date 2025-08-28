@@ -1,3 +1,4 @@
+# kaitiaki/api/server.py
 import time
 from pathlib import Path
 from fastapi import FastAPI, Request, Form
@@ -7,6 +8,7 @@ from fastapi.templating import Jinja2Templates
 from kaitiaki.rag.pipeline import hybrid_search
 from kaitiaki.rag.llm_client import generate_answer
 from kaitiaki.rag.schemas import Answer, Query, Latency, Citation
+from kaitiaki.utils.settings import CFG
 from kaitiaki.utils.logging import logger
 
 # Initialisation de l'application FastAPI
@@ -31,33 +33,33 @@ async def query_endpoint(query: Query):
     
     # Exécution du pipeline de recherche
     ranked_results, retrieval_latency_ms = hybrid_search(query.question)
-    
-    # Préparation du contexte pour le LLM
-    contexts = [doc.content for doc, score in ranked_results[:8]]
-    
-    # --- CORRECTION : Appel réel au LLM ---
+
+
+    # Simulation de la génération de la réponse par le LLM
     llm_start = time.time()
-    generated_answer = generate_answer(query.question, contexts)
+    time.sleep(0.5)  # Simule le temps de génération
+    generated_answer = f"Réponse générée pour la question : '{query.question}'"
     llm_end = time.time()
     
+    end_time = time.time()
+
     # Calcul des latences
-    total_latency_ms = int((time.time() - start_time) * 1000)
+    total_latency_ms = int((end_time - start_time) * 1000)
     llm_latency_ms = int((llm_end - llm_start) * 1000)
     
     latency_details = Latency(
         total_ms=total_latency_ms,
-        retrieval_ms=retrieval_latency_ms,
+        retrieval_ms=retrieval_latency_ms, # On utilise la valeur précise du pipeline
         llm_ms=llm_latency_ms
     )
     
-    # Formatage des citations selon le nouveau schéma
     citations = [
         Citation(
             document_id=doc.meta.get("doc_id", "ID inconnu"),
             content=doc.content,
             page_number=doc.meta.get("page", 0),
             source=doc.meta.get("source", "Source inconnue")
-        ) for doc, score in ranked_results[:5]
+        ) for doc, score in ranked_results[:5] # On limite aux 5 meilleures citations
     ]
 
     return Answer(
@@ -68,16 +70,16 @@ async def query_endpoint(query: Query):
 
 @app.post("/search", response_class=HTMLResponse)
 async def search(request: Request, question: str = Form(...)):
-    """(Endpoint déprécié, utilisé par l'ancien formulaire) Gère la soumission du formulaire et affiche les résultats."""
+    """Gère la soumission du formulaire et affiche les résultats."""
     query_obj = Query(question=question)
     response = await query_endpoint(query_obj)
     return templates.TemplateResponse(
         "result.html",
         {
             "request": request,
-            "q": question, # le template result.html attend 'q'
+            "question": question,
             "answer": response.answer,
-            "cits": response.citations, # le template result.html attend 'cits'
+            "citations": response.citations,
         },
     )
 

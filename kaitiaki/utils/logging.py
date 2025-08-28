@@ -9,3 +9,5 @@ def setup_logger(name="kaitiaki", level=logging.INFO):
         logger.addHandler(h)
     logger.setLevel(level)
     return logger
+
+logger = setup_logger()
