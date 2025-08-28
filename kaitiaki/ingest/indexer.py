@@ -14,7 +14,8 @@ from haystack_integrations.document_stores.qdrant import QdrantDocumentStore
 from kaitiaki.utils.settings import CFG
 
 # CFG = yaml.safe_load((Path(__file__).resolve().parents[1] / "config" / "app.yaml").read_text(encoding="utf-8"))
-PROC = Path(__file__).resolve().parents[1] / "data" / "processed"
+# PROC = Path(__file__).resolve().parents[1] / "data" / "processed"
+PROC = Path(CFG["paths"]["data_processed"])
 
 def yield_chunks():
     for f in sorted(PROC.glob("*.normalized.json")):
@@ -31,22 +32,20 @@ def build_bm25_index(chunks):
     meta = [{"doc_id": c["doc_id"], "page": c["page"]} for c in chunks]
     return bm25, tokenized, meta
 
+
+
 def main():
+
+    embedder = SentenceTransformer(CFG["embedding"]["model"])
+    embedding_dim = embedder.get_sentence_embedding_dimension()
+
     # 1) Qdrant DocumentStore
-    # store = QdrantDocumentStore(
-    #     host=CFG["qdrant"]["host"],
-    #     port=CFG["qdrant"]["port"],
-    #     # collection_name=CFG["qdrant"]["collection"],
-    #     embedding_dim=384,  # all-MiniLM-L6-v2
-    #     recreate_index=True,
-    # )
     store = QdrantDocumentStore(
         host=CFG["qdrant"]["host"],
         port=CFG["qdrant"]["port"],
-        # collection_name=CFG["qdrant"]["collection"],  # specify collection
-        index=CFG["qdrant"]["collection"],  # specify collection
-        embedding_dim=384,  # for all-MiniLM-L6-v2
-        recreate_index=True,  # optional: clears & recreates index
+        index=CFG["qdrant"]["collection"],      # specify collection
+        embedding_dim=embedding_dim,            # size of an embedding
+        recreate_index=True,                    # optional: clears & recreates index
     )
 
     # 1.2) Nettoyage de l'index avant de commencer
@@ -60,7 +59,6 @@ def main():
 
     print(f'Suppression de la collection Qdrant: {collection_name}')
     
-
     # 2) Charger et écrire les documents (chunks)
     docs = []
     for ch in yield_chunks():
@@ -74,15 +72,16 @@ def main():
         print("Aucun document à indexer. Vérifiez data/processed.")
         return
 
-    # store.write_documents(docs)
-    # print(f"Écrits dans Qdrant: {len(docs)} chunks")
-
     # 3) Embeddings (dense)
-    print(f'Calcul des embeddings...CFG["models"]["embedding"] = {CFG["models"]["embedding"]}')
-    embedder = SentenceTransformer(CFG["models"]["embedding"])
-    embs = embedder.encode([d.content for d in docs], batch_size=64, normalize_embeddings=True, show_progress_bar=True)
+    print(f'Calcul des embeddings...CFG["embedding"]["model"] = {CFG["embedding"]["model"]}')
+    embeddings = embedder.encode(
+        [d.content for d in docs],
+        batch_size=64,
+        normalize_embeddings=True,
+        show_progress_bar=True
+    )
     # Sauvegarde des embeddings dans le store
-    for doc, emb in zip(docs, embs):
+    for doc, emb in zip(docs, embeddings):
         doc.embedding = emb.tolist()
     # store.update_embeddings(docs)
     store.write_documents(docs)
