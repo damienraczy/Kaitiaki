@@ -236,7 +236,7 @@ python -m kaitiaki.eval.evaluate
 Fichier : `kaitiaki/config/app.yaml`
 
 * paths : chemins des données et index BM25.
-* qdrant : host, port, collection.
+* qdrant : host, port, index.
 * models :
 
   * embedding
@@ -441,7 +441,7 @@ Conseils :
 
 ## À sauvegarder
 
-* Qdrant : dossier de stockage (collection Kaitiaki).
+* Qdrant : dossier de stockage (index Kaitiaki).
 * BM25 local : `bm25_index.pkl` et `bm25_meta.json`.
 * Données sources : `data/raw/` et `data/processed/`.
 

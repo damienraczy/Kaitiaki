@@ -10,11 +10,6 @@ qdrant:
   host: "127.0.0.1"
   port: 6333
 
-# models:
-#   llm_base_url: "http://127.0.0.1:8000/v1"   # OpenAI-like endpoint (vLLM/serveur maison)
-#   llm_model: "mistral:7b-instruct"          # Model name for the LLM
-#   llm_max_ctx: 4096
-
 embedding:
   # soit un modèle local Sentence-Transformers
   model: "sentence-transformers/all-MiniLM-L6-v2"

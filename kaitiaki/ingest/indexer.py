@@ -43,7 +43,7 @@ def main():
     store = QdrantDocumentStore(
         host=CFG["qdrant"]["host"],
         port=CFG["qdrant"]["port"],
-        index=CFG["qdrant"]["collection"],      # specify collection
+        index=CFG["qdrant"]["index"],      # specify index
         embedding_dim=embedding_dim,            # size of an embedding
         recreate_index=True,                    # optional: clears & recreates index
     )
@@ -54,10 +54,10 @@ def main():
         port=CFG["qdrant"]["port"]
     )
 
-    collection_name = CFG["qdrant"]["collection"]
+    collection_name = CFG["qdrant"]["index"]
     client.delete_collection(collection_name=collection_name)
 
-    print(f'Suppression de la collection Qdrant: {collection_name}')
+    print(f"Suppression de l'index Qdrant: {collection_name}")
     
     # 2) Charger et écrire les documents (chunks)
     docs = []

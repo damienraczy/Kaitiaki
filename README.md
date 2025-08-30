@@ -31,7 +31,7 @@ pip install -r requirements.txt
 Éditez `kaitiaki/config/app.yaml` :
 
 * chemins,
-* nom de collection Qdrant,
+* nom de index Qdrant,
 * modèles (embedding, reranker, LLM),
 * paramètres retrieval.
 
