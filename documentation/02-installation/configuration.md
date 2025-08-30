@@ -8,9 +8,8 @@ Fichier : `kaitiaki/config/app.yaml`
 
   * embedding
   * reranker
-  * llm\_base\_url
-  * llm\_model
+  * llm_base_url
+  * llm_model
 * retrieval :
 
-  * top\_k\_dense, top\_k\_bm25, fusion, rerank\_top\_k
-    
+  * top_k_dense, top_k_bm25, fusion, rerank_top_k

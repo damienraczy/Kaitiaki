@@ -15,3 +15,7 @@
 - Déploiement local sans Docker.
 - Temps de réponse p95 visé: ≤ 5 s CPU quantisé, ≤ 2.5 s GPU 7–8B.
 - Journalisation locale des requêtes et des versions indexées.
+
+## Normalisation des formats
+- Dublin Core
+- JSON‑LD
