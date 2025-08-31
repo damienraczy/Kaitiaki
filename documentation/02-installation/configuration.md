@@ -3,7 +3,7 @@
 Fichier : `kaitiaki/config/app.yaml`
 
 * paths : chemins des données et index BM25.
-* qdrant : host, port, collection.
+* qdrant : host, port, index.
 * models :
 
   * embedding

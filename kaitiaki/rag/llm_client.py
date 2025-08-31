@@ -17,13 +17,25 @@ def generate_answer(question: str, contexts: list[str]) -> str:
         "Réponse:"
     )
 
+    # body = {
+    #     "model": CFG["llm"]["model"],
+    #     "messages": [{"role":"user","content": prompt}],
+    #     # "temperature": CFG["llm"]["temperature"],
+    #     # "max_tokens": CFG["llm"]["max_tokens"],
+    #     "stream": False # On demande une réponse complète, pas un flux
+    # }
+
     body = {
         "model": CFG["llm"]["model"],
-        "messages": [{"role":"user","content": prompt}],
-        # "temperature": CFG["llm"]["temperature"],
-        # "max_tokens": CFG["llm"]["max_tokens"],
-        "stream": False # On demande une réponse complète, pas un flux
+        "prompt": prompt,  # Pas "messages" !
+        "stream": False,
+        "options": {
+            "temperature": CFG["llm"]["temperature"],
+            "num_predict": CFG["llm"]["max_tokens"],
+        }
     }
+
+    endpoint = f'{CFG["llm"]["base_url"].rstrip("/")}/api/generate'
 
     headers = {
         "Authorization": f"Bearer {settings.llm_api_key}",        

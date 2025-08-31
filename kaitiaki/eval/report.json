@@ -1,15 +1,15 @@
 {
   "summary": {
     "num_questions": 10,
-    "avg_latency_ms": 2210.7,
+    "avg_latency_ms": 5563.9,
     "recall@20_avg": 0.6,
     "citations_valid_rate_avg": 0.6
   },
   "results": [
     {
       "question": "Quelle est la durée de la période d'essai pour un cadre dans le secteur du BTP ?",
-      "answer": "",
-      "latency_ms": 2837,
+      "answer": "La période d’essai pour un cadre dans le secteur du BTP est fixée à **trois mois maximum**, renouvelable une seule fois (soit un total de six mois).  \n\nCette règle est prévue par l’article **L1224‑1 du Code du travail** : « La période d’essai ne peut excéder trois mois pour les cadres, et peut être renouvelée une seule fois ».  \n\n> *« La période d’essai ne peut excéder trois mois pour les cadres, et peut être renouvelée une seule fois »* (Code du travail, art. L1224‑1).",
+      "latency_ms": 4755,
       "recall@20": 0.0,
       "citations_valid_rate": 0.0,
       "retrieved_citations": [
@@ -22,8 +22,8 @@
     },
     {
       "question": "Quel est le salaire minimum pour un ouvrier qualifié de niveau P2 dans le BTP en 2019 ?",
-      "answer": "",
-      "latency_ms": 2198,
+      "answer": "Le salaire minimum national pour un ouvrier qualifié de niveau **P2** dans le secteur BTP en 2019 était de **1 500,00 € brut mensuel** (≈ 1 500 € brut par mois).  \n\n> *Convention collective nationale des Bâtiments et Travaux publics (CCNBTP), 2019, article 4, tableau 1 – salaire minimum national.*",
+      "latency_ms": 7387,
       "recall@20": 0.0,
       "citations_valid_rate": 0.0,
       "retrieved_citations": [
@@ -37,15 +37,15 @@
     },
     {
       "question": "Comment sont majorées les heures supplémentaires dans la branche Commerce et divers ?",
-      "answer": "",
-      "latency_ms": 2149,
+      "answer": "Dans la branche **Commerce et divers** (Nouvelle‑Calédonie), les heures supplémentaires sont rémunérées avec des majorations qui varient selon la nature de l’heures et le contexte de travail :\n\n| Situation | Majoration appliquée | Commentaire |\n|-----------|----------------------|-------------|\n| **Heures supplémentaires normales** (au-delà de 39 h hebdomadaires, ou 42 h dans les entreprises de plus de 10 salariés) | **25 %** | Taux de base prévu par les articles Lp. 221‑4 à Lp. 221‑12. |\n| **Heures exceptionnelles (jours fériés chômés, jours de grève, etc.) qui ne peuvent être compensés en repos** | **75 %** | Majorations supplémentaires qui s’ajoutent aux majorations d’heures supplémentaires, sauf si un taux plus élevé est déjà applicable. |\n| **Heures exceptionnelles de nuit + jour férié chômé** | **100 %** | Le taux le plus avantageux est retenu lorsqu’il y a concurrence de majorations (exemple donné). |\n| **Heures au-delà du contingent annuel (130 h)** | **100 %** | Majorations maximales lorsqu’on dépasse le plafond annuel d’heures supplémentaires. |\n\n> *« bénéficient d’une majoration de 75 % lorsque ce jour ne peut être compensé en repos. Ces majorations s’ajoutent aux éventuelles majorations pour heures supplémentaires. Par contre, lorsque deux taux de majorations sont applicables, ils ne s’ajoutent pas ; le taux le plus avantageux est alors appliqué (exemple : heures exceptionnelles de nuit, un jour férié chômé : majoration 100 %). »*  \n> *« les heures supplémentaires ouvrent droit au paiement aux taux majorés, au repos compensateur et s’imputent sur le contingent annuel. »*  \n> *« le contingent annuel d’heures supplémentaires mentionné à l’article Lp. 221‑10 est fixé à 130 heures supplémentaires par salarié. »*  \n\nCes règles s’appliquent dans le cadre de l’accord professionnel de la branche « Commerces et divers » (article 129).",
+      "latency_ms": 8550,
       "recall@20": 0.0,
       "citations_valid_rate": 0.0,
       "retrieved_citations": [
         "Code_du_travail_PR_ChG_14-11-2019.pdf",
         "Code_du_travail_PL_ChG_02-10-2018.pdf",
-        "20190905cdsp_batiments_et_travaux_publics.pdf",
-        "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf"
+        "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf",
+        "20190905cdsp_batiments_et_travaux_publics.pdf"
       ],
       "expected_citations": [
         "20190806cdsp_commerce_et_divers.pdf"
@@ -53,13 +53,13 @@
     },
     {
       "question": "Quelle est la durée du congé pour le mariage d'un salarié selon l'accord interprofessionnel territorial ?",
-      "answer": "",
-      "latency_ms": 2019,
+      "answer": "Le congé exceptionnel accordé au salarié à l’occasion de son mariage dure **quatre jours**.  \n> *Article 27 : Congés exceptionnels – « mariage du salarié 4 jours »* (Accord interprofessionnel territorial).",
+      "latency_ms": 3064,
       "recall@20": 1.0,
       "citations_valid_rate": 1.0,
       "retrieved_citations": [
-        "20190905cdsp_batiments_et_travaux_publics.pdf",
-        "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf"
+        "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf",
+        "20190905cdsp_batiments_et_travaux_publics.pdf"
       ],
       "expected_citations": [
         "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf"
@@ -67,14 +67,14 @@
     },
     {
       "question": "Quelles sont les conditions de l'indemnité de licenciement pour un employé ayant 5 ans d'ancienneté dans le secteur du commerce ?",
-      "answer": "",
-      "latency_ms": 2272,
+      "answer": "**Conditions de l’indemnité de licenciement (5 ans d’ancienneté, secteur du commerce)**  \n\n| Élément | Détail | Source |\n|---------|--------|--------|\n| **Montant de l’indemnité** | 0,5 mois de salaire (5 ans × 1/10 mois/an) | Article 88 : « L’indemnité de licenciement est égale à 1/10ème de mois par année d’ancienneté… » |\n| **Base de calcul du salaire** | Le douzième de la rémunération des douze derniers mois précédant le licenciement **ou**, si plus avantageux, le tiers des trois derniers mois (prorata temporis pour primes annuelles ou exceptionnelles) | Article 88 : « Le salaire servant de base au calcul de l’indemnité est le douzième de la rémunération des douze derniers mois… ou, selon la formule la plus avantageuse… le tiers des trois derniers mois… » |\n| **Non cumulable** | L’indemnité ne s’ajoute pas à d’autres indemnités de même nature | Article 88 : « Cette indemnité de licenciement ne se cumule pas avec toute autre indemnité de même nature… » |\n| **Cotisations sociales** | L’indemnité n’est pas soumise à cotisations sociales | Article 88 : « …et ne supporte pas de cotisations sociales. » |\n| **Préavis** | Le préavis applicable (2 mois pour 2–10 ans d’ancienneté) n’est pas inclus dans l’indemnité | Article 87 : « …un mois pour un travailleur ayant une ancienneté continue comprise entre six mois et moins de deux ans, deux mois pour un travailleur ayant une ancienneté continue comprise entre deux ans et dix ans… » |\n\nEn résumé, un salarié du commerce disposant de 5 ans d’ancienneté recevra une indemnité de licenciement équivalente à **½ mois de salaire**, calculée sur la base du douzième des 12 derniers mois ou du tiers des 3 derniers mois, selon la formule la plus avantageuse. Cette indemnité n’est pas cumulable avec d’autres indemnités et n’est pas soumise à cotisations sociales.",
+      "latency_ms": 7179,
       "recall@20": 0.0,
       "citations_valid_rate": 0.0,
       "retrieved_citations": [
         "Code_du_travail_PL_ChG_02-10-2018.pdf",
-        "20190905cdsp_batiments_et_travaux_publics.pdf",
-        "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf"
+        "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf",
+        "20190905cdsp_batiments_et_travaux_publics.pdf"
       ],
       "expected_citations": [
         "20190806cdsp_commerce_et_divers.pdf"
@@ -82,8 +82,8 @@
     },
     {
       "question": "Le harcèlement moral est-il défini dans la partie législative du Code du travail ?",
-      "answer": "",
-      "latency_ms": 2335,
+      "answer": "Oui.  \nDans la partie législative du Code du travail de Nouvelle‑Calédonie, le harcèlement moral est explicitement défini. L’article Lp. 114‑1 précise :\n\n> « Sont constitutifs de harcèlement moral et interdits les agissements répétés à l’encontre d’une personne, ayant pour objet une dégradation de ses conditions de travail susceptible de porter atteinte à ses droits et à sa dignité, d’altérer sa santé physique ou mentale, ou de compromettre son avenir professionnel. »\n\nCette définition apparaît dans la partie législative du code (Chapitre IV : Harcèlement moral au travail).  \n\n> Source : Article Lp. 114‑1, Code du travail de Nouvelle‑Calédonie.",
+      "latency_ms": 3671,
       "recall@20": 1.0,
       "citations_valid_rate": 1.0,
       "retrieved_citations": [
@@ -95,15 +95,15 @@
     },
     {
       "question": "Quelles sont les règles concernant le préavis de démission pour les employés dans le BTP ?",
-      "answer": "",
-      "latency_ms": 2179,
+      "answer": "**Préavis de démission dans le BTP (Nouvelle‑Calédonie)**  \n\n| Situation | Durée du préavis | Conditions particulières |\n|-----------|------------------|--------------------------|\n| **Tout salarié (employé, ou cadre/ingénieur)** | **3 mois** (préavis réciproque) | - Le délai s’applique sauf en cas de faute grave ou lourde. <br>- Le salarié peut quitter son poste avant l’expiration du préavis **si** il trouve un nouvel emploi **et** obtient l’acceptation écrite de l’employeur. |\n| **Ingénieur ou cadre** | 3 mois | - S’il trouve un emploi avant la fin du préavis, il ne peut partir sans verser l’indemnité de préavis qu’avec l’acceptation écrite de l’employeur. <br>- S’il est congédié et trouve un emploi avant l’expiration du préavis, il peut partir sans indemnité **si** il prévient l’employeur un mois à l’avance et renonce aux droits de recherche d’emploi (heures d’absence égales à la durée hebdomadaire). |\n\n> **Extrait clé**  \n> *« Dans le cas de démission ou de licenciement pour motif autre qu’une faute grave commise par le travailleur, ou autre qu’un cas de force majeure, le délai‑congé est de 3 mois. »*  \n> *« Quand un ingénieur ou cadre démissionnaire trouve un emploi avant la fin de son préavis, il ne peut quitter son poste sans verser l’indemnité de préavis qu’avec l’acceptation écrite de son employeur. »*  \n\n**En résumé**  \n- Le préavis de démission dans le BTP est fixé à **3 mois** pour tous les salariés, sauf faute grave.  \n- Pour les cadres/ingénieurs, quitter le poste avant la fin du préavis nécessite l’accord écrit de l’employeur, sauf s’ils respectent les conditions de préavis réciproque (préavis de 3 mois).  \n- Les salariés qui trouvent un nouvel emploi avant la fin du préavis peuvent partir sans indemnité **si** l’employeur accepte par écrit.  \n\n*(Sources : articles « Préavis réciproque » et « Quand un ingénieur ou cadre démissionnaire… »).*",
+      "latency_ms": 6414,
       "recall@20": 1.0,
       "citations_valid_rate": 1.0,
       "retrieved_citations": [
-        "Code_du_travail_PL_ChG_02-10-2018.pdf",
         "20190806cdsp_commerce_et_divers.pdf",
-        "20190905cdsp_batiments_et_travaux_publics.pdf",
-        "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf"
+        "Code_du_travail_PL_ChG_02-10-2018.pdf",
+        "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf",
+        "20190905cdsp_batiments_et_travaux_publics.pdf"
       ],
       "expected_citations": [
         "20190905cdsp_batiments_et_travaux_publics.pdf"
@@ -111,8 +111,8 @@
     },
     {
       "question": "Comment est organisée la négociation collective sur les salaires selon l'accord cadre interprofessionnel ?",
-      "answer": "",
-      "latency_ms": 1851,
+      "answer": "**Organisation de la négociation collective sur les salaires (accord cadre interprofessionnel)**  \n\n| Élément | Détails | Source |\n|---------|---------|--------|\n| **Parties signataires** | Organisations syndicales représentatives d’employeurs (CGPME‑NC, MEDEF‑NC, UPA‑NC) et de salariés (COGETRA, CSTNC, UT‑CGT‑FO NC, USOENC, USTKE, UT‑CFE CGC). | Accord Cadre Interprofessionnel (article 1) |\n| **Calendrier** | Revalorisation des minima salariaux conventionnels à négocier avant le **15 avril** de chaque année. | Accord Cadre Interprofessionnel (article 1) |\n| **Commissions paritaires** | Convoquées selon un calendrier fixé par les partenaires sociaux. | Accord Cadre Interprofessionnel (article 1) |\n| **Rôle de la DTE** | Assure le suivi des convocations ; en cas de défaillance, elle convoque et anime les commissions. | Accord Cadre Interprofessionnel (article 1) |\n| **Bilan** | Élaboré par les services du gouvernement et soumis aux parties avant le **20 avril**. | Accord Cadre Interprofessionnel (article 1) |\n| **Temps de négociation** | Le temps passé à la négociation est payé comme temps de travail à échéance normale. | Accord Cadre Interprofessionnel (article 1) |\n| **Crédits d’heures exceptionnels** | 20 h/an pour les négociations salariales annuelles de branche, 40 h pour d’autres négociations ; 2 représentants par organisation syndicale. | Accord Cadre Interprofessionnel (article 1) |\n| **Révision** | Accord conclu pour durée indéterminée, révisable d’un commun accord avec préavis de deux mois. | Avenant N° 1 (article 3) |\n\nEn résumé, l’accord cadre impose un calendrier fixe (15 avril pour les minima, 20 avril pour le bilan), des commissions paritaires convoquées par les partenaires sociaux, un suivi par la Direction du Travail et de l’Emploi, et un paiement du temps de négociation comme temps de travail, avec des crédits d’heures exceptionnels pour les représentants syndicaux.",
+      "latency_ms": 4912,
       "recall@20": 1.0,
       "citations_valid_rate": 1.0,
       "retrieved_citations": [
@@ -124,14 +124,14 @@
     },
     {
       "question": "Existe-t-il une prime d'ancienneté dans la convention collective du commerce et divers ?",
-      "answer": "",
-      "latency_ms": 2184,
+      "answer": "Oui.  \nLa convention collective du commerce et divers prévoit une prime d’ancienneté :\n\n* **Article 23 (Chapitre IV – Primes et indemnités)** : « Tout agent relevant des catégories ouvrier, employé, technicien ou agent de maîtrise bénéficie d’une prime d’ancienneté sous forme d’une majoration de 2 % à partir de la 3ᵉ année, puis 2 % supplémentaires pour chaque période de deux ans accomplie jusqu’à la 20ᵉ année. »  \n* **Article 17 (Chapitre III – Primes et indemnités)** : « Les ouvriers et employés bénéficieront d’une majoration de leur salaire de base : 3 % après trois ans d’ancienneté, plus 1 % par année à compter de la cinquième année jusqu’à la quinzième année incluse. »\n\nCes dispositions confirment l’existence d’une prime d’ancienneté dans la convention collective du commerce et divers.  \n\n> *Article 23 : « Tout agent relevant des catégories ouvrier, employé, technicien ou agent de maîtrise bénéficie d’une prime d’ancienneté sous forme d’une majoration de 2 % à partir de la 3ᵉ année… »*  \n> *Article 17 : « Les ouvriers et employés bénéficieront d’une majoration de leur salaire de base : 3 % après trois ans d’ancienneté… »*",
+      "latency_ms": 4598,
       "recall@20": 1.0,
       "citations_valid_rate": 1.0,
       "retrieved_citations": [
         "20190806cdsp_commerce_et_divers.pdf",
-        "20190905cdsp_batiments_et_travaux_publics.pdf",
-        "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf"
+        "20190730cdsp_accord_interprofessionnel_territorial_ait.pdf",
+        "20190905cdsp_batiments_et_travaux_publics.pdf"
       ],
       "expected_citations": [
         "20190806cdsp_commerce_et_divers.pdf"
@@ -139,8 +139,8 @@
     },
     {
       "question": "Quelle est la procédure en cas de faute grave d'un salarié selon le Code du travail ?",
-      "answer": "",
-      "latency_ms": 2083,
+      "answer": "**Procédure de licenciement pour faute grave (Code du travail – Nouvelle‑Calédonie)**  \n\n| Étape | Détails | Référence |\n|-------|---------|-----------|\n| 1. **Convocation à l’entretien préalable** | L’employeur doit convoquer le salarié par lettre recommandée ou remise en main propre contre décharge. La convocation indique l’objet de l’entretien. | Art. Lp. 122‑4 |\n| 2. **Entretien préalable** | Au cours de l’entretien, l’employeur expose les motifs de la décision envisagée (faute grave) et recueille les explications du salarié. Le salarié peut être assisté par une personne de son choix appartenant au personnel de l’entreprise. | Art. Lp. 122‑4 |\n| 3. **Notification du licenciement** | Si l’employeur décide de licencier, il notifie sa décision par lettre recommandée avec avis de réception. La date de réception fixe le point de départ du préavis. | Art. Lp. 122‑5 |\n| 4. **Motifs du licenciement** | La lettre de licenciement doit énoncer le ou les motifs (faute grave). | Art. Lp. 122‑6 |\n| 5. **Suspension du contrat** | En cas de faute grave, l’employeur peut suspendre le contrat de travail sans préavis, sauf s’il justifie d’une faute grave ou d’une impossibilité de maintenir le contrat. | Art. Lp. 122‑7 |\n| 6. **Indemnités** | Si le préavis n’est pas exécuté, sauf faute grave, le salarié a droit à une indemnité compensatrice de préavis. | Art. Lp. 122‑24 |\n\n**Résumé**  \nEn cas de faute grave, l’employeur doit d’abord convoquer le salarié à un entretien préalable, recueillir ses explications, puis notifier le licenciement par lettre recommandée en précisant les motifs. Le contrat peut être suspendu immédiatement. Si le préavis n’est pas exécuté, le salarié n’a pas droit à l’indemnité compensatrice de préavis, sauf faute grave.  \n\n> *« La convocation est effectuée par lettre recommandée ou par lettre remise en main propre contre décharge. … Au cours de l’entretien, l’employeur indique le ou les motifs de la décision envisagée et recueille les explications du salarié. »* (Art. Lp. 122‑4)  \n> *« Lorsque l’employeur décide de licencier un salarié, il lui notifie sa décision par lettre recommandée avec avis de réception. »* (Art. Lp. 122‑5)  \n> *« L’employeur énonce le ou les motifs du licenciement dans la lettre de licenciement mentionnée à l’article Lp. 122‑5. »* (Art. Lp. 122‑6)  \n> *« La suspension du contrat de travail n’autorise pas l’employeur à rompre le contrat sauf s’il justifie, soit d’une faute grave du salarié, soit de l’impossibilité où il se trouve pour un motif extérieur à la cause de la suspension, de maintenir le contrat. »* (Art. Lp. 122‑7)",
+      "latency_ms": 5109,
       "recall@20": 1.0,
       "citations_valid_rate": 1.0,
       "retrieved_citations": [

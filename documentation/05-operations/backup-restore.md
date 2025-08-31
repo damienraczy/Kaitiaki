@@ -2,7 +2,7 @@
 
 ## À sauvegarder
 
-* Qdrant : dossier de stockage (collection Kaitiaki).
+* Qdrant : dossier de stockage (index Kaitiaki).
 * BM25 local : `bm25_index.pkl` et `bm25_meta.json`.
 * Données sources : `data/raw/` et `data/processed/`.
 

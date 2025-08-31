@@ -22,7 +22,7 @@ embedding_dimension = embedder.get_sentence_embedding_dimension()
 print(f"Dimension de l'embedding détectée : {embedding_dimension}")
 
 store = QdrantDocumentStore(
-    url=CFG["qdrant"]["host"],
+    host=CFG["qdrant"]["host"],
     port=CFG["qdrant"]["port"],
     index=CFG["qdrant"]["index"],
     embedding_dim=embedding_dimension,
@@ -61,9 +61,9 @@ def hybrid_search(q: str, top_k: int = 20) -> Tuple[List[Tuple[Document, float]]
 
     # 1) Recherche Dense (vectorielle)
     dense_docs = _dense_search(q, top_k=top_k)
+    bm25_list = _bm25_search(q, top_k=top_k)
 
     # 2) Recherche Lexicale (BM25) et récupération du contenu
-    bm25_list = _bm25_search(q, top_k=top_k)
     bm25_docs = []
     if bm25_list:
         bm25_meta = json.loads(Path(CFG["paths"]["bm25_meta"]).read_text(encoding="utf-8"))

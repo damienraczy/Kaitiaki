@@ -5,7 +5,7 @@ paths:
   bm25_meta:  "kaitiaki/data/processed/bm25_meta.json"
 
 qdrant:
-  url: "http://localhost:6333"
+  # url: "http://localhost:6333"
   index: "kaitiaki_dev"
   host: "127.0.0.1"
   port: 6333
