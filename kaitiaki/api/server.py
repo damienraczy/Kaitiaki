@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from kaitiaki.rag.retriever import hybrid_search
+from kaitiaki.rag.search_engine import hybrid_search
 from kaitiaki.rag.llm_client import generate_answer
 from kaitiaki.rag.schemas import Answer, Query, Latency, Citation
 from kaitiaki.utils.logging import logger
