@@ -58,6 +58,8 @@ htmlcov/
 *.swo
 
 # Données de travail (non versionnées)
+data/*
+storage/*
 kaitiaki/data/raw/*
 kaitiaki/data/processed/*
 
@@ -68,3 +70,7 @@ experiments/
 tests_local/
 sandbox/
 kaitiaki/.DS_Store
+kai_kite/models/weights/*
+
+# system & temps
+.qdrant-initialized
