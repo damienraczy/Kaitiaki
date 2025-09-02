@@ -25,3 +25,19 @@ rank-bm25
 jinja2
 numpy
 scikit-learn
+
+# Pour le traitement d'images et PDF
+pymupdf
+pillow
+
+# Pour la détection de mise en page
+ultralytics
+pytesseract
+torch
+
+# Pour l'extraction de tableaux
+transformers
+timm
+
+
+

@@ -3,77 +3,100 @@ from PIL import Image
 import pytesseract
 import torch
 
-def extract_text_from_box(page_image: Image.Image, box_coords: list) -> str:
+def extract_content_from_boxes(page_image: Image.Image, detected_boxes, layout_model, conf_threshold, table_models) -> list:
     """
-    Extrait le texte d'une zone spécifique (boîte) d'une image en utilisant l'OCR.
-
-    Args:
-        page_image: L'image complète de la page (objet Pillow).
-        box_coords: Les coordonnées [x1, y1, x2, y2] de la boîte.
-
-    Returns:
-        Le texte extrait.
+    Extrait le contenu (texte ou tableau) de toutes les boîtes détectées sur une page.
+    OPTIMISÉ : L'OCR est fait une seule fois pour toute la page.
     """
+    extracted_elements = []
+    
+    # --- OPTIMISATION : Exécuter l'OCR une seule fois sur toute la page ---
     try:
-        # 1. Recadrer l'image pour n'isoler que la zone de la boîte
-        cropped_image = page_image.crop(box_coords)
-
-        # 2. Utiliser pytesseract pour faire l'OCR
-        # On ajoute des options de configuration pour aider Tesseract
-        custom_config = r'--oem 3 --psm 6 -l fra'
-        text = pytesseract.image_to_string(cropped_image, config=custom_config)
-        return text.strip()
-
+        ocr_data = pytesseract.image_to_data(page_image, lang='fra', output_type=pytesseract.Output.DICT)
     except pytesseract.TesseractNotFoundError:
-        print("\n\nERREUR CRITIQUE : Tesseract n'est pas installé ou n'est pas dans le PATH système.")
-        print("Sur macOS avec Homebrew, assurez-vous d'avoir bien fait 'brew install tesseract'.")
-        print("Sur d'autres systèmes, vérifiez votre installation.\n\n")
-        # On arrête le programme pour que l'erreur soit bien visible
-        raise 
+        print("\n\nERREUR CRITIQUE : Tesseract n'est pas installé ou n'est pas dans le PATH.")
+        raise
     except Exception as e:
-        # Pour les autres erreurs (ex: pack de langue manquant)
-        print(f"Une erreur est survenue pendant l'OCR : {e}")
-        return ""
+        print(f"Une erreur est survenue pendant l'OCR de la page : {e}")
+        ocr_data = None # On continue sans OCR si une erreur survient
+    # --------------------------------------------------------------------
 
-def extract_table_from_box(page_image: Image.Image, box_coords: list, image_processor, model) -> str:
+    table_image_processor, table_model = table_models
+
+    for box in detected_boxes:
+        if float(box.conf[0]) < conf_threshold:
+            continue
+
+        class_name = layout_model.names[int(box.cls[0])]
+        coords = box.xyxy[0].tolist()
+        content = ""
+
+        if class_name in ["Text", "Title", "Section-header", "List-item"]:
+            # On utilise les données de l'OCR global
+            content = _get_text_in_box(ocr_data, coords)
+        elif class_name == "Table":
+            # L'extraction de tableau reste une opération sur une image rognée
+            content = _extract_table_from_box(page_image, coords, table_image_processor, table_model)
+        
+        if content:
+            extracted_elements.append({
+                # "page" sera ajouté dans le pipeline principal
+                "element_type": class_name,
+                "confidence": float(box.conf[0]),
+                "coordinates": coords,
+                "content": content
+            })
+            
+    return extracted_elements
+
+
+def _get_text_in_box(ocr_data: dict, box_coords: list) -> str:
     """
-    Extrait la structure d'un tableau et la convertit en Markdown.
+    Helper qui assemble le texte présent à l'intérieur d'une boîte
+    à partir des données OCR de la page entière.
+    """
+    if not ocr_data:
+        return ""
+        
+    x1, y1, x2, y2 = box_coords
+    text_parts = []
+    
+    for i in range(len(ocr_data['text'])):
+        # On ne garde que les mots avec une confiance suffisante
+        if int(ocr_data['conf'][i]) > 60:
+            # Coordonnées du mot trouvé par l'OCR
+            w_x, w_y, w_w, w_h = ocr_data['left'][i], ocr_data['top'][i], ocr_data['width'][i], ocr_data['height'][i]
+            
+            # On calcule le centre du mot
+            word_center_x = w_x + w_w / 2
+            word_center_y = w_y + w_h / 2
+            
+            # Si le centre du mot est dans notre boîte, on le garde
+            if (x1 < word_center_x < x2) and (y1 < word_center_y < y2):
+                text_parts.append(ocr_data['text'][i])
+                
+    return " ".join(text_parts).strip()
 
-    Args:
-        page_image: L'image complète de la page.
-        box_coords: Les coordonnées du tableau détecté par YOLO.
-        image_processor: Le processeur d'image pour TATR.
-        model: Le modèle TATR.
 
-    Returns:
-        Une chaîne de caractères représentant le tableau au format Markdown.
+def _extract_table_from_box(page_image: Image.Image, box_coords: list, image_processor, model) -> str:
+    """
+    (Fonction renommée en privée) Extrait la structure d'un tableau et la convertit.
     """
     try:
-        # 1. Recadrer l'image sur la zone du tableau
         table_image = page_image.crop(box_coords)
-        # 2. Préparer l'image pour le modèle
         inputs = image_processor(images=table_image, return_tensors="pt")
-        # 3. Faire l'inférence
         outputs = model(**inputs)
-        # 4. Convertir les résultats en une structure de données
         target_sizes = torch.tensor([table_image.size[::-1]])
         results = image_processor.post_process_object_detection(outputs, threshold=0.7, target_sizes=target_sizes)[0]
 
-        # 5. Extraire le texte de chaque cellule détectée
         cells = []
         for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
             cell_coords = [round(i, 2) for i in box.tolist()]
-            # Appliquer l'OCR sur chaque cellule
-            cell_text = extract_text_from_box(table_image, cell_coords)
+            # Pour les cellules de tableau, on doit toujours faire un OCR ciblé
+            cell_text = pytesseract.image_to_string(table_image.crop(cell_coords), lang='fra', config='--psm 6').strip()
             cells.append({'box': cell_coords, 'text': cell_text})
 
-
-        # --- NOUVELLE LOGIQUE DE RECONSTRUCTION ---
         return _linearize_table(cells)
-        # 6. Reconstruire le tableau et le convertir en Markdown
-        # markdown_table = _reconstruct_table_to_markdown(cells)
-        # return markdown_table
-
     except Exception as e:
         print(f"Erreur lors de l'extraction du tableau : {e}")
         return ""
