@@ -78,12 +78,45 @@ def _get_text_in_box(ocr_data: dict, box_coords: list) -> str:
     return " ".join(text_parts).strip()
 
 
+# def _extract_table_from_box(page_image: Image.Image, box_coords: list, image_processor, model) -> str:
+#     """
+#     (Fonction renommée en privée) Extrait la structure d'un tableau et la convertit.
+#     """
+#     try:
+#         table_image = page_image.crop(box_coords)
+#         inputs = image_processor(images=table_image, return_tensors="pt")
+#         outputs = model(**inputs)
+#         target_sizes = torch.tensor([table_image.size[::-1]])
+#         results = image_processor.post_process_object_detection(outputs, threshold=0.7, target_sizes=target_sizes)[0]
+
+#         cells = []
+#         for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
+#             cell_coords = [round(i, 2) for i in box.tolist()]
+#             # Pour les cellules de tableau, on doit toujours faire un OCR ciblé
+#             cell_text = pytesseract.image_to_string(table_image.crop(cell_coords), lang='fra', config='--psm 6').strip()
+#             cells.append({'box': cell_coords, 'text': cell_text})
+
+#         return _linearize_table(cells)
+#     except Exception as e:
+#         print(f"Erreur lors de l'extraction du tableau : {e}")
+#         return ""
+
 def _extract_table_from_box(page_image: Image.Image, box_coords: list, image_processor, model) -> str:
     """
-    (Fonction renommée en privée) Extrait la structure d'un tableau et la convertit.
+    (Version OPTIMISÉE) Extrait la structure d'un tableau.
+    L'OCR est fait une seule fois sur l'image du tableau.
     """
     try:
         table_image = page_image.crop(box_coords)
+        
+        # --- L'OCR est fait une seule fois sur l'image du tableau ---
+        try:
+            table_ocr_data = pytesseract.image_to_data(table_image, lang='fra', output_type=pytesseract.Output.DICT)
+        except Exception as ocr_error:
+            print(f"Avertissement : Erreur OCR sur un tableau : {ocr_error}")
+            table_ocr_data = None
+        # -----------------------------------------------------------
+
         inputs = image_processor(images=table_image, return_tensors="pt")
         outputs = model(**inputs)
         target_sizes = torch.tensor([table_image.size[::-1]])
@@ -92,15 +125,18 @@ def _extract_table_from_box(page_image: Image.Image, box_coords: list, image_pro
         cells = []
         for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
             cell_coords = [round(i, 2) for i in box.tolist()]
-            # Pour les cellules de tableau, on doit toujours faire un OCR ciblé
-            cell_text = pytesseract.image_to_string(table_image.crop(cell_coords), lang='fra', config='--psm 6').strip()
+            
+            # On utilise les données de l'OCR du tableau pour extraire le texte de la cellule
+            cell_text = _get_text_in_box(table_ocr_data, cell_coords)
+            
             cells.append({'box': cell_coords, 'text': cell_text})
 
         return _linearize_table(cells)
+        
     except Exception as e:
         print(f"Erreur lors de l'extraction du tableau : {e}")
         return ""
-
+    
 def _reconstruct_table_to_markdown(cells: list) -> str:
     """Helper pour convertir une liste de cellules en tableau Markdown."""
     if not cells:
