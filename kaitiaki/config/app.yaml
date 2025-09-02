@@ -31,11 +31,18 @@ llm:
   base_url: "https://ollama.com/api"
   model: "gpt-oss:20b"            # ou mistral:7b-instruct, etc.
   
+# retrieval:
+#   top_k_dense: 20
+#   top_k_bm25: 20
+#   fusion: "rrf"
+#   rerank_top_k: 25
+
 retrieval:
-  top_k_dense: 20
-  top_k_bm25: 20
+  top_k_dense: 40   # Augmenté de 20 à 40
+  top_k_bm25: 40    # Augmenté de 20 à 40
   fusion: "rrf"
-  rerank_top_k: 25
+  rerank_top_k: 25  # Maintenu à 25 pour ne pas surcharger le reranker
+
 
 ui:
   default_days: 180
