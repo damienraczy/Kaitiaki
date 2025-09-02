@@ -1,8 +1,8 @@
 paths:
-  data_raw: "kaitiaki/data/raw"
-  data_processed: "kaitiaki/data/processed"
-  bm25_index: "kaitiaki/data/processed/bm25_index.pkl"
-  bm25_meta:  "kaitiaki/data/processed/bm25_meta.json"
+  data_raw: "data/raw"
+  data_processed: "data/processed"
+  bm25_index: "data/processed/bm25_index.pkl"
+  bm25_meta:  "data/processed/bm25_meta.json"
 
 qdrant:
   # url: "http://localhost:6333"

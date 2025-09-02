@@ -1,0 +1,16 @@
+# kai_kite/config.yaml
+models:
+  layout_detector:
+    # Modèle recommandé pour commencer
+    # repo_id: "omoured/YOLOv10-Document-Layout-Analysis-s" 
+    repo_id: "kai_kite/models/weights/yolov10s_best.pt"
+  table_transformer:
+    # On le met ici pour plus tard
+    detection_repo_id: "microsoft/table-transformer-detection"
+    structure_repo_id: "microsoft/table-transformer-structure-recognition"
+
+processing:
+  image_dpi: 300
+  detection_confidence_threshold: 0.7
+  table_structure_threshold: 0.6
+  ocr_lang: "fra"

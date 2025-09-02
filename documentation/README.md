@@ -9,7 +9,7 @@ Cette documentation couvre la conception, l’installation, le développement, l
   - disclaimer.md : avertissements et limites d’usage
 - 01-architecture/
   - architecture.md : vue d’ensemble technique
-  - rag-pipeline.md : pipeline RAG hybride détaillé
+  - rag-retriever.md : pipeline RAG hybride détaillé
   - data-model.md : schémas de données et formats d’échange
   - security.md : sécurité, souveraineté, RBAC
   - operations.md : vues déploiement et exécution
@@ -42,4 +42,4 @@ Cette documentation couvre la conception, l’installation, le développement, l
   - naming.md : nommage et positionnement
   - ui-copy.md : ton et messages UI
 
-Pour démarrer, lisez **02-installation/quickstart.md**, puis **03-developpement/api-spec.md** et **01-architecture/rag-pipeline.md**.
+Pour démarrer, lisez **02-installation/quickstart.md**, puis **03-developpement/api-spec.md** et **01-architecture/rag-retriever.md**.

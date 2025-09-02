@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from kaitiaki.rag.pipeline import hybrid_search
+from kaitiaki.rag.retriever import hybrid_search
 from kaitiaki.rag.llm_client import generate_answer
 from kaitiaki.rag.schemas import Answer, Query, Latency, Citation
 from kaitiaki.utils.logging import logger
@@ -29,7 +29,7 @@ async def query_endpoint(query: Query):
     """Traite une question et retourne une réponse structurée."""
     start_time = time.time()
     
-    # Exécution du pipeline de recherche
+    # Exécution du search_engine
     ranked_results, retrieval_latency_ms = hybrid_search(query.question)
     
     # Préparation du contexte pour le LLM
