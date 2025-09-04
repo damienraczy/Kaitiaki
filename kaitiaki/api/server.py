@@ -18,13 +18,17 @@ from kaitiaki.utils.settings import CFG
 from sentence_transformers import SentenceTransformer, CrossEncoder
 from haystack_integrations.document_stores.qdrant import QdrantDocumentStore
 from haystack_integrations.components.retrievers.qdrant import QdrantEmbeddingRetriever
-from kaitiaki.ingest import parse_pdf, normalize, indexer
+from kaitiaki.ingest import adapt_from_kaitike, indexer
 
 MODELS = {}
 INGESTION_LOCK = Lock()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """
+    Charge les modèles et les index au démarrage du serveur.
+    Cette fonction est exécutée une seule fois.
+    """
     logger.info("Chargement des modèles et des index...")
     
     MODELS["embedder"] = SentenceTransformer(CFG["embedding"]["model"])
@@ -40,15 +44,20 @@ async def lifespan(app: FastAPI):
     MODELS["store"] = store
     MODELS["retriever"] = QdrantEmbeddingRetriever(document_store=store)
     
-    with open(CFG["paths"]["bm25_index"], "rb") as f:
-        bm25_data = pickle.load(f)
-    meta = json.loads(Path(CFG["paths"]["bm25_meta"]).read_text(encoding="utf-8"))
-    MODELS["bm25_index"] = {
-        "bm25": bm25_data["bm25"],
-        "tokenized": bm25_data["tokenized"],
-        "meta": meta
-    }
-    
+    try:
+        with open(CFG["paths"]["bm25_index"], "rb") as f:
+            bm25_data = pickle.load(f)
+        meta = json.loads(Path(CFG["paths"]["bm25_meta"]).read_text(encoding="utf-8"))
+        MODELS["bm25_index"] = {
+            "bm25": bm25_data["bm25"],
+            "tokenized": bm25_data["tokenized"],
+            "meta": meta
+        }
+        logger.info("Index BM25 chargé avec succès.")
+    except FileNotFoundError:
+        logger.warning("Fichiers d'index BM25 non trouvés. La recherche lexicale sera désactivée. Lancez une ingestion.")
+        MODELS["bm25_index"] = None
+
     logger.info("Tous les modèles et index ont été chargés.")
     yield
     MODELS.clear()
@@ -56,7 +65,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Kaitiaki API",
     description="API pour le moteur de recherche RAG Kaitiaki.",
-    version="0.1.0",
+    version="0.2.0", # Version incrémentée pour marquer le changement d'architecture
     lifespan=lifespan
 )
 
@@ -68,15 +77,18 @@ async def read_root(request: Request):
 
 @app.post("/ingest")
 async def ingest_documents():
+    """
+    Lance le pipeline d'ingestion complet.
+    Cette opération est bloquante.
+    """
     if not INGESTION_LOCK.acquire(blocking=False):
         return {"status": "busy", "message": "Une ingestion est déjà en cours."}
     try:
-        logger.info("Début de l'ingestion via API...")
-        parse_pdf.main()
-        normalize.main()
+        logger.info("Début de l'ingestion via API (adapt_from_kaitike -> indexer)...")
+        adapt_from_kaitike.main()
         indexer.main()
-        logger.info("Ingestion terminée avec succès.")
-        return {"status": "ok", "message": "Les documents ont été ingérés."}
+        logger.info("Ingestion terminée avec succès. Veuillez redémarrer le serveur pour charger le nouvel index BM25.")
+        return {"status": "ok", "message": "Les documents ont été ingérés. Un redémarrage du serveur est requis pour activer les changements."}
     except Exception as e:
         logger.error(f"Erreur durant l'ingestion via API : {e}", exc_info=True)
         return {"status": "error", "message": str(e)}
@@ -85,9 +97,21 @@ async def ingest_documents():
 
 @app.post("/query", response_model=Answer)
 async def query_endpoint(query: Query):
+    """
+    Point d'entrée principal pour les requêtes de recherche.
+    Orchestre la stratégie de recherche parent/enfant.
+    """
     start_time = time.time()
     
-    ranked_results, retrieval_latency_ms = hybrid_search(
+    if not MODELS.get("bm25_index"):
+        return Answer(
+            answer="Erreur: L'index de recherche lexicale (BM25) n'est pas chargé. Veuillez lancer une ingestion et redémarrer le serveur.",
+            citations=[],
+            latency=Latency(total_ms=int((time.time() - start_time) * 1000), retrieval_ms=0, llm_ms=0)
+        )
+
+    # --- Appel de la nouvelle fonction de recherche parent/enfant ---
+    parent_docs, child_docs_for_citation, retrieval_latency_ms = hybrid_search(
         query.question,
         models=MODELS,
         top_k_dense=CFG["retrieval"]["top_k_dense"],
@@ -95,7 +119,8 @@ async def query_endpoint(query: Query):
         rerank_top_k=CFG["retrieval"]["rerank_top_k"]
     )
     
-    contexts = [doc.content for doc, score in ranked_results[:8]]
+    # Le contexte pour le LLM est construit à partir des chunks PARENTS (riche).
+    contexts = [doc.content for doc in parent_docs] if parent_docs else []
     
     llm_start = time.time()
     generated_answer = generate_answer(query.question, contexts)
@@ -110,13 +135,14 @@ async def query_endpoint(query: Query):
         llm_ms=llm_latency_ms
     )
     
+    # Les citations pour l'UI sont construites à partir des chunks ENFANTS (précis).
     citations = [
         Citation(
             document_id=doc.meta.get("doc_id", "ID inconnu"),
-            content=doc.content,
+            content=doc.content, # Contenu court et précis de l'enfant
             page_number=doc.meta.get("page", 0),
-            source=doc.meta.get("source", "Source inconnue")
-        ) for doc, score in ranked_results[:5]
+            source=doc.meta.get("doc_id", "Source inconnue")
+        ) for doc in child_docs_for_citation
     ]
 
     return Answer(
@@ -127,6 +153,7 @@ async def query_endpoint(query: Query):
 
 @app.post("/search", response_class=HTMLResponse)
 async def search(request: Request, question: str = Form(...)):
+    """Gère la soumission du formulaire HTML."""
     query_obj = Query(question=question)
     response = await query_endpoint(query_obj)
     return templates.TemplateResponse(

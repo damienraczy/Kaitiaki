@@ -8,22 +8,37 @@ from kaitiaki.utils.settings import CFG, settings
 
 def generate_answer(question: str, contexts: list[str]) -> str:
     """Appel à une API OpenAI-compatible locale (vLLM ou autre)."""
-    prompt = (
-        "Vous êtes Kaitiaki, assistant de veille. "
-        "Répondez en français de manière concise et sourcée. "
-        "Citez les extraits pertinents en fin de réponse.\n\n"
-        f"Question: {question}\n\n"
-        "Contexte:\n" + "\n---\n".join(contexts[:8]) + "\n\n"
-        "Réponse:"
-    )
+    # prompt = (
+    #     "Vous êtes Kaitiaki, assistant de veille. "
+    #     "Répondez en français de manière concise et sourcée. "
+    #     "Citez les extraits pertinents en fin de réponse.\n\n"
+    #     f"Question: {question}\n\n"
+    #     "Contexte:\n" + "\n---\n".join(contexts[:8]) + "\n\n"
+    #     "Réponse:"
+    # )
 
-    # body = {
-    #     "model": CFG["llm"]["model"],
-    #     "messages": [{"role":"user","content": prompt}],
-    #     # "temperature": CFG["llm"]["temperature"],
-    #     # "max_tokens": CFG["llm"]["max_tokens"],
-    #     "stream": False # On demande une réponse complète, pas un flux
-    # }
+    # --- NOUVEAU PROMPT HYBRIDE ---
+
+    # joined_contexts = "\n---\n".join(contexts[:8])
+    joined_contexts = "\n---\n".join(contexts)
+    print(f"joined contexts = {joined_contexts}")
+    prompt = f"""
+**SYSTEM INSTRUCTIONS (Follow these rules strictly):**
+1.  **You are Kaitiaki, an expert document analysis assistant for New Caledonia.**
+2.  **Your task is to answer the user's question based *only* on the provided "Contexte".** Do not use any external knowledge.
+3.  **If the answer is not in the "Contexte", you MUST reply with the exact sentence: "L'information n'est pas disponible dans les documents fournis."** Do not try to guess or infer an answer.
+4.  **Your final answer MUST be in French.**
+
+---
+**Contexte :**
+{joined_contexts}
+---
+**Question :**
+{question}
+---
+**Réponse (in French):**
+"""
+
 
     body = {
         "model": CFG["llm"]["model"],

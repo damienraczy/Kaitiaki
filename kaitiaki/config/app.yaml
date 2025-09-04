@@ -27,9 +27,9 @@ llm:
   # base_url: "http://localhost:11434"
   # model: "qwen2.5:7b-instruct"            # ou mistral:7b-instruct, etc.
   temperature: 0.2
-  max_tokens: 4000
+  max_tokens: 64000
   base_url: "https://ollama.com/api"
-  model: "gpt-oss:20b"            # ou mistral:7b-instruct, etc.
+  model: "gpt-oss:120b"            # ou mistral:7b-instruct, etc.
   
 # retrieval:
 #   top_k_dense: 20

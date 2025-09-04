@@ -3,14 +3,56 @@
 <head>
   <meta charset="utf-8">
   <title>Kaitiaki — Veille NC</title>
+  <!-- Ajout de la bibliothèque marked.js pour le rendu Markdown -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 880px; margin: 2rem auto; }
+    body { font-family: system-ui, sans-serif; max-width: 880px; margin: 2rem auto; line-height: 1.6; }
     input, button { font-size: 1rem; padding: .6rem; }
     .row { display: flex; gap: .5rem; }
     #result-container { margin-top: 2rem; }
-    pre { white-space: pre-wrap; background-color: #f4f4f4; padding: 1rem; border-radius: 5px; }
+    
+    /* Styles pour le contenu rendu depuis le Markdown */
+    .markdown-content {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+    }
+    .markdown-content h1, .markdown-content h2, .markdown-content h3 {
+        border-bottom: 1px solid #eee;
+        padding-bottom: .3em;
+        margin-top: 1.5em;
+    }
+    .markdown-content ul, .markdown-content ol {
+        padding-left: 2em;
+    }
+    .markdown-content code {
+        background-color: #eee;
+        padding: .2em .4em;
+        border-radius: 3px;
+    }
+    .markdown-content pre {
+        background-color: #f4f4f4;
+        padding: 1rem;
+        border-radius: 5px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    .markdown-content table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1em 0;
+    }
+    .markdown-content th, .markdown-content td {
+        border: 1px solid #ccc;
+        padding: .5em .8em;
+    }
+    .markdown-content th {
+        background-color: #f2f2f2;
+    }
+
     .cit { font-size: .92rem; color: #333; margin: .4rem 0; }
-    .snippet { font-style: italic; color: #555; margin-left: 1rem; border-left: 2px solid #ccc; padding-left: 1rem; }
+    .snippet { font-style: italic; color: #555; margin-left: 1rem; border-left: 2px solid #ccc; padding-left: 1rem; font-size: 0.9em; }
   </style>
 </head>
 <body>
@@ -38,7 +80,6 @@
     resultContainer.innerHTML = '<p>Recherche en cours...</p>';
 
     try {
-      // --- CORRECTION : Envoyer un champ "question" ---
       const response = await fetch('/query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,19 +92,19 @@
       }
 
       const data = await response.json();
+      
+      // --- AMÉLIORATION : Utiliser marked.js pour convertir le Markdown en HTML ---
+      const formattedAnswer = marked.parse(data.answer);
 
-      // --- CORRECTION : Utiliser les nouveaux noms de champs ---
-      // Les alias Pydantic (camelCase) sont utilisés ici : documentId, pageNumber, etc.
       let html = `
         <h2>Question</h2>
         <p>${questionText}</p>
         <h2>Réponse</h2>
-        <pre>${data.answer}</pre>
+        <div class="markdown-content">${formattedAnswer}</div>
         <h3>Citations</h3>
       `;
 
       data.citations.forEach(cit => {
-        // Crée un snippet court à partir du contenu complet
         const snippet = cit.content.length > 240 ? cit.content.substring(0, 240) + '…' : cit.content;
         html += `
           <div class="cit">• ${cit.source || cit.documentId} — page ${cit.pageNumber}</div>

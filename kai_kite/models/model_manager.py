@@ -1,4 +1,7 @@
 # kai_kite/models/model_manager.py
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="torch.nn.modules.module")
+
 from ultralytics import YOLO
 from transformers import TableTransformerForObjectDetection, AutoImageProcessor
 from ..utils.config import get_config
@@ -21,7 +24,10 @@ def get_table_models():
     logger.info(f"Chargement du modèle de structure de tableau : {structure_repo_id}...")
     
     image_processor = AutoImageProcessor.from_pretrained(structure_repo_id)
-    model = TableTransformerForObjectDetection.from_pretrained(structure_repo_id)
+    model = TableTransformerForObjectDetection.from_pretrained(
+        structure_repo_id,
+        ignore_mismatched_sizes=True
+    )
     
     logger.info("Modèles de tableau chargés avec succès.")
     return image_processor, model
